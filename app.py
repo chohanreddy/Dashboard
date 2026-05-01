@@ -458,15 +458,15 @@ with tab2:
             open_df.groupby(["department", "position_status"])
             .size().reset_index(name="count")
         )
+        stacked["label"] = stacked["count"].apply(lambda v: str(v) if v >= 2 else "")
         fig = px.bar(
             stacked, x="department", y="count", color="position_status",
             title="Open Roles by Department and Status",
             color_discrete_map=status_colors,
             labels={"count": "Open Roles", "department": "", "position_status": "Status"},
-            text="count",
+            text="label",
         )
         fig.update_traces(
-            texttemplate="%{text}",
             textposition="inside",
             insidetextanchor="middle",
             textfont=dict(size=11, color="white"),
@@ -512,6 +512,9 @@ with tab3:
 
     for col, (name, data) in zip([sc1, sc2, sc3], scenarios.items()):
         card_cls = "scenario-base" if name == "Base" else "scenario-other"
+        delta     = data["eoy"] - base_fte
+        delta_col = "#EF4444" if delta < 0 else DARK_GREEN
+        delta_str = f"{'▼' if delta < 0 else '▲'} {abs(delta):.0f} vs current"
         col.markdown(
             f'<div class="{card_cls}">'
             f'<p style="color:{PRIMARY};font-size:0.72rem;font-weight:700;text-transform:uppercase;'
@@ -521,7 +524,9 @@ with tab3:
             f'Attrition rate: <strong>{data["rate"]*100:.0f}%</strong></p>'
             f'<p style="font-size:2.8rem;font-weight:700;color:{DARK_GREEN};margin:0;line-height:1">'
             f'{data["eoy"]:.0f}</p>'
-            f'<p style="color:#9CA3AF;font-size:0.78rem;margin:2px 0 12px">Projected EoY FTE</p>'
+            f'<p style="color:#9CA3AF;font-size:0.78rem;margin:2px 0 4px">Projected EoY FTE</p>'
+            f'<p style="color:{delta_col};font-size:0.82rem;font-weight:600;margin:0 0 12px">'
+            f'{delta_str}</p>'
             f'<hr style="border:none;border-top:1px solid #E5E7EB;margin:0 0 12px">'
             f'<p style="color:#6B7280;font-size:0.85rem;margin:0">'
             f'Vol. attrition: <strong style="color:{DARK_GREEN}">{data["vol_attr"]:.1f} FTE</strong></p>'
@@ -610,17 +615,22 @@ with tab3:
         )
         avg_rate = atr_trend["attrition_rate_annualised"].mean()
 
+        # Identify first, peak and last indices for selective labels
+        _y = atr_trend["attrition_rate_annualised"] * 100
+        _label_idx = sorted({0, int(_y.idxmax()), len(_y) - 1})
+        _labels = [f"{v:.1f}%" if i in _label_idx else "" for i, v in enumerate(_y)]
+
         fig = go.Figure()
         fig.add_trace(go.Scatter(
             x=atr_trend["year_month"],
-            y=atr_trend["attrition_rate_annualised"] * 100,
+            y=_y,
             mode="lines+markers+text",
             name="Annualised Rate",
             line=dict(color=DARK_GREEN, width=2.5),
             marker=dict(size=7, color=DARK_GREEN, line=dict(width=2, color="white")),
-            text=[f"{v*100:.1f}%" for v in atr_trend["attrition_rate_annualised"]],
+            text=_labels,
             textposition="top center",
-            textfont=dict(size=9, color=DARK_GREEN),
+            textfont=dict(size=10, color=DARK_GREEN, family="Inter, sans-serif"),
             hovertemplate="<b>%{x|%b %Y}</b><br>Annualised: %{y:.1f}%<extra></extra>",
         ))
         fig.add_hline(
@@ -661,8 +671,7 @@ with tab3:
         fig = px.bar(
             atr_dept, x="department", y="attrition_rate_annualised",
             title="Average Annualised Attrition Rate by Department",
-            color="department",
-            color_discrete_sequence=COLOR_SEQ,
+            color_discrete_sequence=[DARK_GREEN],
             labels={"attrition_rate_annualised": "Annualised Rate", "department": ""},
             text="attrition_rate_annualised",
         )
