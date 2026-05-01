@@ -19,96 +19,66 @@ COLOR_SEQ  = ["#1A7A50", "#34D186", "#3B82F6", "#F59E0B", "#8B5CF6", "#EF4444", 
 st.markdown(f"""
 <style>
   #MainMenu, footer {{ visibility: hidden; }}
-
-  /* Hide sidebar entirely */
   section[data-testid="stSidebar"] {{ display: none !important; }}
   [data-testid="collapsedControl"]  {{ display: none !important; }}
 
-  /* Tab strip */
   .stTabs [data-baseweb="tab-list"] {{
-      gap: 6px;
-      background: white;
-      border-radius: 10px;
-      padding: 5px 6px;
-      box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+      gap: 6px; background: white; border-radius: 10px;
+      padding: 5px 6px; box-shadow: 0 1px 4px rgba(0,0,0,0.08);
   }}
   .stTabs [data-baseweb="tab"] {{
-      border-radius: 7px;
-      padding: 8px 18px;
-      font-weight: 500;
-      color: #6B7280;
+      border-radius: 7px; padding: 8px 18px; font-weight: 500; color: #6B7280;
   }}
   .stTabs [aria-selected="true"] {{
       background-color: {LIGHT_BG} !important;
-      color: {DARK_GREEN} !important;
-      font-weight: 600;
+      color: {DARK_GREEN} !important; font-weight: 600;
   }}
 
-  /* KPI cards */
   .kpi-card {{
-      background: white;
-      border-left: 4px solid {PRIMARY};
-      border-radius: 10px;
-      padding: 18px 20px;
-      margin-bottom: 4px;
+      background: white; border-left: 4px solid {PRIMARY};
+      border-radius: 10px; padding: 18px 20px; margin-bottom: 4px;
       box-shadow: 0 1px 4px rgba(0,0,0,0.07);
   }}
-  .kpi-value {{
-      font-size: 2rem;
-      font-weight: 700;
-      color: {DARK_GREEN};
-      line-height: 1.2;
+  .kpi-card-warn {{
+      background: white; border-left: 4px solid #F59E0B;
+      border-radius: 10px; padding: 18px 20px; margin-bottom: 4px;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.07);
   }}
-  .kpi-label {{
-      font-size: 0.78rem;
-      color: #6B7280;
-      margin-top: 4px;
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-      font-weight: 500;
-  }}
-  .kpi-sub {{
-      font-size: 0.78rem;
-      color: #9CA3AF;
-      margin-top: 2px;
-  }}
+  .kpi-value       {{ font-size: 2rem; font-weight: 700; color: {DARK_GREEN}; line-height: 1.2; }}
+  .kpi-value-warn  {{ font-size: 2rem; font-weight: 700; color: #D97706; line-height: 1.2; }}
+  .kpi-label       {{ font-size: 0.78rem; color: #6B7280; margin-top: 4px;
+                      text-transform: uppercase; letter-spacing: 0.05em; font-weight: 500; }}
+  .kpi-sub         {{ font-size: 0.78rem; color: #9CA3AF; margin-top: 2px; }}
 
-  /* Scenario cards */
-  .scenario-base {{
+  .scenario-base  {{
       background: linear-gradient(135deg, {LIGHT_BG} 0%, white 100%);
-      border: 2px solid {PRIMARY};
-      border-radius: 12px;
-      padding: 24px 20px;
-      text-align: center;
-      box-shadow: 0 3px 10px rgba(52,209,134,0.18);
+      border: 2px solid {PRIMARY}; border-radius: 12px; padding: 24px 20px;
+      text-align: center; box-shadow: 0 3px 10px rgba(52,209,134,0.18);
   }}
   .scenario-other {{
-      background: white;
-      border: 1px solid #E5E7EB;
-      border-radius: 12px;
-      padding: 24px 20px;
-      text-align: center;
-      box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+      background: white; border: 1px solid #E5E7EB; border-radius: 12px;
+      padding: 24px 20px; text-align: center; box-shadow: 0 1px 4px rgba(0,0,0,0.06);
   }}
 
-  /* Summary & dict cards */
   .summary-card {{
-      background: white;
-      border-radius: 12px;
-      padding: 20px 24px;
-      margin-bottom: 14px;
-      border: 1px solid #E5E7EB;
+      background: white; border-radius: 12px; padding: 20px 24px;
+      margin-bottom: 14px; border: 1px solid #E5E7EB;
       box-shadow: 0 1px 4px rgba(0,0,0,0.06);
   }}
   .summary-card h4 {{ color: {DARK_GREEN}; margin-bottom: 8px; font-size: 1rem; }}
 
   .dict-card {{
-      background: white;
-      border-left: 3px solid {PRIMARY};
-      border-radius: 8px;
-      padding: 14px 18px;
-      margin-bottom: 10px;
-      box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+      background: white; border-left: 3px solid {PRIMARY}; border-radius: 8px;
+      padding: 14px 18px; margin-bottom: 10px; box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+  }}
+
+  .info-banner {{
+      background: #FFFBEB; border-left: 4px solid #F59E0B; border-radius: 8px;
+      padding: 12px 16px; margin: 12px 0;
+  }}
+  .callout-banner {{
+      background: {LIGHT_BG}; border-left: 4px solid {PRIMARY}; border-radius: 8px;
+      padding: 12px 16px; margin: 0 0 16px 0;
   }}
 </style>
 """, unsafe_allow_html=True)
@@ -138,27 +108,21 @@ def load_data():
 
 df_all, atr_all = load_data()
 
-# ─── Encode logo for inline HTML ─────────────────────────────────────────────
-
 with open("Bolt_logo.svg.png", "rb") as _f:
     _logo_b64 = base64.b64encode(_f.read()).decode()
 
 departments = sorted(df_all["department"].dropna().unique().tolist())
+regions     = sorted(df_all["region"].dropna().unique().tolist())
 
-# ─── Top header: logo + title + filter ───────────────────────────────────────
+# ─── Top header: logo + title + filters ──────────────────────────────────────
 
-hdr_left, hdr_right = st.columns([3, 1])
+hdr_left, hdr_dept, hdr_region = st.columns([3, 1, 1])
 
 with hdr_left:
     st.markdown(f"""
-    <div style="
-        background: linear-gradient(100deg, {DARK_GREEN} 0%, {PRIMARY} 100%);
-        padding: 18px 28px;
-        border-radius: 14px;
-        display: flex;
-        align-items: center;
-        gap: 20px;
-    ">
+    <div style="background:linear-gradient(100deg,{DARK_GREEN} 0%,{PRIMARY} 100%);
+                padding:18px 28px;border-radius:14px;display:flex;
+                align-items:center;gap:20px;">
         <img src="data:image/png;base64,{_logo_b64}"
              style="height:44px;width:auto;filter:brightness(0) invert(1);">
         <div>
@@ -173,56 +137,72 @@ with hdr_left:
     </div>
     """, unsafe_allow_html=True)
 
-with hdr_right:
+def _filter_card(label):
     st.markdown(
-        f"""<div style="
-            background:white;
-            border:1px solid #E5E7EB;
-            border-radius:12px;
-            padding:14px 16px 6px;
-            box-shadow:0 1px 4px rgba(0,0,0,0.07);
-            height:100%;
-        ">
-        <p style="margin:0 0 6px;font-size:0.75rem;font-weight:600;
-                  text-transform:uppercase;letter-spacing:0.06em;color:#6B7280">
-            Filter by Department
-        </p>
-        </div>""",
+        f'<div style="background:white;border:1px solid #E5E7EB;border-radius:12px;'
+        f'padding:12px 14px 4px;box-shadow:0 1px 4px rgba(0,0,0,0.07);">'
+        f'<p style="margin:0 0 4px;font-size:0.72rem;font-weight:600;'
+        f'text-transform:uppercase;letter-spacing:0.06em;color:#6B7280">{label}</p>'
+        f'</div>',
         unsafe_allow_html=True,
     )
+
+with hdr_dept:
+    _filter_card("Department")
     selected_depts = st.multiselect(
-        "",
-        options=departments,
-        default=[],
-        placeholder="All Departments",
-        label_visibility="collapsed",
+        "", options=departments, default=[],
+        placeholder="All Departments", label_visibility="collapsed",
+    )
+
+with hdr_region:
+    _filter_card("Region")
+    selected_regions = st.multiselect(
+        "", options=regions, default=[],
+        placeholder="All Regions", label_visibility="collapsed",
     )
 
 st.markdown('<div style="margin-bottom:8px"></div>', unsafe_allow_html=True)
 
-if selected_depts:
-    df  = df_all[df_all["department"].isin(selected_depts)].copy()
-    atr = atr_all[atr_all["department"].isin(selected_depts)].copy()
-else:
-    df  = df_all.copy()
-    atr = atr_all.copy()
+# ─── Apply filters ────────────────────────────────────────────────────────────
 
-# ─── Pre-compute everything at top level ─────────────────────────────────────
+mask = pd.Series([True] * len(df_all), index=df_all.index)
+if selected_depts:
+    mask &= df_all["department"].isin(selected_depts)
+if selected_regions:
+    mask &= df_all["region"].isin(selected_regions)
+df = df_all[mask].copy()
+
+atr_mask = pd.Series([True] * len(atr_all), index=atr_all.index)
+if selected_depts:
+    atr_mask &= atr_all["department"].isin(selected_depts)
+atr = atr_all[atr_mask].copy()
+
+# ─── Pre-compute ──────────────────────────────────────────────────────────────
+
+REF_DATE = pd.Timestamp("2025-05-01")
 
 active_df = df[df["is_active"] == 1]
 open_df   = df[df["is_open"] == 1]
 
-# KPIs – Tab 1
-active_hc        = active_df["fte"].sum()
-perm_fte_kpi     = active_df[active_df["employment_type"] == "FTE"]["fte"].sum()
-contractors_ftc  = active_df[active_df["employment_type"] != "FTE"]["fte"].sum()
-open_count       = int(df["is_open"].sum())
+# Tab 1 KPIs
+active_hc           = active_df["fte"].sum()
+perm_fte_kpi        = active_df[active_df["employment_type"] == "FTE"]["fte"].sum()
+contractors_ftc     = active_df[active_df["employment_type"] != "FTE"]["fte"].sum()
+open_count          = int(df["is_open"].sum())
+confirmed_leavers_n = int(df[df["is_confirmed_leaver_eoy"] == 1].shape[0])
+confirmed_leavers_fte_disp = df[df["is_confirmed_leaver_eoy"] == 1]["fte"].sum()
 
-# KPIs – Tab 2
+# Tab 2 KPIs
 recruiting_n         = int((df["position_status"] == "Open - Recruiting").sum())
 approved_n           = int((df["position_status"] == "Open - Approved").sum())
 on_hold_n            = int((df["position_status"] == "Open - On Hold").sum())
 signed_not_started_n = int(df["is_signed_not_started"].sum())
+
+# Days open (from req_opened_date)
+_open_days = open_df.copy()
+_open_days["days_open"] = (REF_DATE - _open_days["req_opened_date"]).dt.days.clip(lower=0)
+avg_days_open = _open_days["days_open"].mean()
+avg_days_open_str = f"{avg_days_open:.0f}" if not pd.isna(avg_days_open) else "N/A"
 
 # EoY calculations
 base_fte              = active_df["fte"].sum()
@@ -247,15 +227,18 @@ for _name, _rate in [("Low", 0.12), ("Base", 0.15), ("High", 0.18)]:
 
 pending_budget = int((open_df["budget_owner_approval"] != "Approved").sum()) if not open_df.empty else 0
 
+# Trailing attrition rate (for EoY callout)
+trailing_rate = atr["attrition_rate_annualised"].mean() if not atr.empty else None
+
 # ─── Helpers ─────────────────────────────────────────────────────────────────
 
-def kpi_card(col, label, value, sub=None):
+def kpi_card(col, label, value, sub=None, warn=False):
+    cls = "kpi-card-warn" if warn else "kpi-card"
+    val_cls = "kpi-value-warn" if warn else "kpi-value"
     sub_html = f'<div class="kpi-sub">{sub}</div>' if sub else ""
     col.markdown(
-        f'<div class="kpi-card">'
-        f'<div class="kpi-value">{value}</div>'
-        f'<div class="kpi-label">{label}</div>'
-        f'{sub_html}</div>',
+        f'<div class="{cls}"><div class="{val_cls}">{value}</div>'
+        f'<div class="kpi-label">{label}</div>{sub_html}</div>',
         unsafe_allow_html=True,
     )
 
@@ -266,8 +249,7 @@ def clean_chart(fig, height=380, legend_h=True):
     )
     fig.update_layout(
         height=height,
-        paper_bgcolor="white",
-        plot_bgcolor="white",
+        paper_bgcolor="white", plot_bgcolor="white",
         font=dict(family="Inter, sans-serif", size=12, color="#374151"),
         title_font=dict(size=14, color="#111827", family="Inter, sans-serif"),
         margin=dict(l=12, r=12, t=52, b=16),
@@ -283,14 +265,11 @@ def add_donut_center(fig, total, unit="FTE"):
             f"<b style='font-size:20px;color:{DARK_GREEN}'>{total:,.0f}</b>"
             f"<br><span style='font-size:11px;color:#6B7280'>{unit}</span>"
         ),
-        x=0.5, y=0.5,
-        showarrow=False,
+        x=0.5, y=0.5, showarrow=False,
         xref="paper", yref="paper",
-        font=dict(size=14, color=DARK_GREEN),
-        align="center",
+        font=dict(size=14, color=DARK_GREEN), align="center",
     )
     return fig
-
 
 # ═══════════════════════════════════════════════════════════════════════════════
 # TABS
@@ -307,15 +286,19 @@ tab1, tab2, tab3, tab4, tab5 = st.tabs([
 # ── Tab 1: Overview ───────────────────────────────────────────────────────────
 
 with tab1:
-    k1, k2, k3, k4 = st.columns(4)
-    kpi_card(k1, "Active Headcount",   f"{active_hc:,}",      "Filled positions")
-    kpi_card(k2, "Permanent FTE",      f"{perm_fte_kpi:,}",   "Employment type = FTE")
-    kpi_card(k3, "Contractors + FTC",  f"{contractors_ftc:,}","Non-permanent")
-    kpi_card(k4, "Open Positions",     f"{open_count:,}",     "Unfilled roles")
+    # 5 KPI cards — added Confirmed Leavers
+    k1, k2, k3, k4, k5 = st.columns(5)
+    kpi_card(k1, "Active Headcount",   f"{active_hc:,}",                   "Filled positions")
+    kpi_card(k2, "Permanent FTE",      f"{perm_fte_kpi:,}",                "Employment type = FTE")
+    kpi_card(k3, "Contractors + FTC",  f"{contractors_ftc:,}",             "Non-permanent")
+    kpi_card(k4, "Open Positions",     f"{open_count:,}",                  "Unfilled roles")
+    kpi_card(k5, "Confirmed Leavers",  f"{confirmed_leavers_n}",
+             f"{confirmed_leavers_fte_disp:.1f} FTE · departing before EoY", warn=True)
+
 
     st.markdown("---")
 
-    # Row 1: Active FTE by dept | by region donut
+    # Row 1: FTE by dept | by region
     col1, col2 = st.columns([2, 1])
 
     with col1:
@@ -331,30 +314,22 @@ with tab1:
             text="fte",
         )
         fig.update_traces(
-            texttemplate="%{text:.0f}",
-            textposition="outside",
-            textfont=dict(size=12, color="#374151"),
-            marker_line_width=0,
+            texttemplate="%{text:.0f}", textposition="outside",
+            textfont=dict(size=12, color="#374151"), marker_line_width=0,
         )
-        fig.update_layout(
-            showlegend=False,
-            yaxis=dict(range=[0, dept_fte["fte"].max() * 1.2]),
-        )
+        fig.update_layout(showlegend=False, yaxis=dict(range=[0, dept_fte["fte"].max() * 1.2]))
         st.plotly_chart(clean_chart(fig), use_container_width=True)
 
     with col2:
         region_fte = active_df.groupby("region")["fte"].sum().reset_index()
         fig = px.pie(
             region_fte, names="region", values="fte",
-            title="Active FTE by Region",
-            hole=0.60,
+            title="Active FTE by Region", hole=0.60,
             color_discrete_sequence=COLOR_SEQ,
         )
         fig.update_traces(
-            textposition="outside",
-            textinfo="label+percent",
-            textfont_size=11,
-            pull=[0.03] * len(region_fte),
+            textposition="outside", textinfo="label+percent",
+            textfont_size=11, pull=[0.03] * len(region_fte),
         )
         add_donut_center(fig, region_fte["fte"].sum())
         st.plotly_chart(clean_chart(fig), use_container_width=True)
@@ -366,15 +341,12 @@ with tab1:
         emp_fte = active_df.groupby("employment_type")["fte"].sum().reset_index()
         fig = px.pie(
             emp_fte, names="employment_type", values="fte",
-            title="Active FTE by Employment Type",
-            hole=0.60,
+            title="Active FTE by Employment Type", hole=0.60,
             color_discrete_sequence=COLOR_SEQ,
         )
         fig.update_traces(
-            textposition="outside",
-            textinfo="label+percent",
-            textfont_size=11,
-            pull=[0.03] * len(emp_fte),
+            textposition="outside", textinfo="label+percent",
+            textfont_size=11, pull=[0.03] * len(emp_fte),
         )
         add_donut_center(fig, emp_fte["fte"].sum())
         st.plotly_chart(clean_chart(fig, height=360), use_container_width=True)
@@ -388,17 +360,14 @@ with tab1:
         mgmt_fte = mgmt_fte.sort_values("management_level")
         fig = px.bar(
             mgmt_fte, y="management_level", x="fte",
-            orientation="h",
-            title="Active FTE by Management Level",
+            orientation="h", title="Active FTE by Management Level",
             color_discrete_sequence=[DARK_GREEN],
             labels={"fte": "FTE", "management_level": ""},
             text="fte",
         )
         fig.update_traces(
-            texttemplate="%{x:.0f}",
-            textposition="outside",
-            textfont=dict(size=12, color="#374151"),
-            marker_line_width=0,
+            texttemplate="%{x:.0f}", textposition="outside",
+            textfont=dict(size=12, color="#374151"), marker_line_width=0,
         )
         fig.update_layout(
             showlegend=False,
@@ -406,31 +375,24 @@ with tab1:
         )
         st.plotly_chart(clean_chart(fig, height=360), use_container_width=True)
 
-    # Row 3: Grouped bar Active FTE vs Open Roles
+    # Row 3: Active FTE vs Open Roles grouped bar
     active_by_dept = (
         active_df.groupby("department")["fte"].sum()
         .reset_index().rename(columns={"fte": "Active FTE"})
     )
-    open_by_dept = (
-        open_df.groupby("department").size()
-        .reset_index(name="Open Roles")
-    )
+    open_by_dept = open_df.groupby("department").size().reset_index(name="Open Roles")
     grouped = active_by_dept.merge(open_by_dept, on="department", how="outer").fillna(0)
     melted  = grouped.melt(id_vars="department", var_name="Metric", value_name="Count")
 
     fig = px.bar(
         melted, x="department", y="Count", color="Metric",
-        barmode="group",
-        title="Active FTE vs Open Roles by Department",
+        barmode="group", title="Active FTE vs Open Roles by Department",
         color_discrete_sequence=[DARK_GREEN, "#3B82F6"],
-        labels={"Count": "", "department": ""},
-        text="Count",
+        labels={"Count": "", "department": ""}, text="Count",
     )
     fig.update_traces(
-        texttemplate="%{text:.0f}",
-        textposition="outside",
-        textfont=dict(size=11, color="#374151"),
-        marker_line_width=0,
+        texttemplate="%{text:.0f}", textposition="outside",
+        textfont=dict(size=11, color="#374151"), marker_line_width=0,
     )
     fig.update_layout(yaxis=dict(range=[0, melted["Count"].max() * 1.2]))
     st.plotly_chart(clean_chart(fig, height=380), use_container_width=True)
@@ -438,14 +400,17 @@ with tab1:
 # ── Tab 2: Open Positions ─────────────────────────────────────────────────────
 
 with tab2:
-    k1, k2, k3, k4 = st.columns(4)
+    # 5 KPIs — added Avg Days Open
+    k1, k2, k3, k4, k5 = st.columns(5)
     kpi_card(k1, "Actively Recruiting",  f"{recruiting_n:,}",         "Open – Recruiting")
     kpi_card(k2, "Approved Not Started", f"{approved_n:,}",           "Open – Approved")
     kpi_card(k3, "On Hold",              f"{on_hold_n:,}",            "Open – On Hold")
-    kpi_card(k4, "Signed Not Started",   f"{signed_not_started_n:,}", "Offer accepted, not yet started")
+    kpi_card(k4, "Signed Not Started",   f"{signed_not_started_n:,}", "Offer accepted · also in active headcount")
+    kpi_card(k5, "Avg Days Open",        avg_days_open_str,           "From req opened to today")
 
     st.markdown("---")
 
+    # Row 1: stacked by status | budget donut
     col1, col2 = st.columns([2, 1])
 
     with col1:
@@ -467,10 +432,8 @@ with tab2:
             text="label",
         )
         fig.update_traces(
-            textposition="inside",
-            insidetextanchor="middle",
-            textfont=dict(size=11, color="white"),
-            marker_line_width=0,
+            textposition="inside", insidetextanchor="middle",
+            textfont=dict(size=11, color="white"), marker_line_width=0,
         )
         st.plotly_chart(clean_chart(fig), use_container_width=True)
 
@@ -478,26 +441,74 @@ with tab2:
         budget_counts = open_df.groupby("budget_owner_approval").size().reset_index(name="count")
         fig = px.pie(
             budget_counts, names="budget_owner_approval", values="count",
-            title="Budget Approval Status",
-            hole=0.60,
+            title="Budget Approval Status", hole=0.60,
             color_discrete_sequence=["#34D186", "#F59E0B", "#94A3B8"],
         )
         fig.update_traces(
-            textposition="outside",
-            textinfo="label+percent",
-            textfont_size=11,
-            pull=[0.03] * len(budget_counts),
+            textposition="outside", textinfo="label+percent",
+            textfont_size=11, pull=[0.03] * len(budget_counts),
         )
         add_donut_center(fig, budget_counts["count"].sum(), unit="Open")
         st.plotly_chart(clean_chart(fig), use_container_width=True)
 
+    # Row 2: Employment type split | Days open by dept
+    col3, col4 = st.columns([1, 2])
+
+    with col3:
+        emp_open = open_df.groupby("employment_type").size().reset_index(name="count")
+        fig = px.bar(
+            emp_open, y="employment_type", x="count",
+            orientation="h",
+            title="Open Roles by Employment Type",
+            color_discrete_sequence=COLOR_SEQ,
+            color="employment_type",
+            labels={"count": "Open Roles", "employment_type": ""},
+            text="count",
+        )
+        fig.update_traces(
+            texttemplate="%{x}", textposition="outside",
+            textfont=dict(size=12, color="#374151"), marker_line_width=0,
+        )
+        fig.update_layout(
+            showlegend=False,
+            xaxis=dict(range=[0, emp_open["count"].max() * 1.3]),
+        )
+        st.plotly_chart(clean_chart(fig, height=300), use_container_width=True)
+
+    with col4:
+        if not _open_days["days_open"].isna().all():
+            days_dept = (
+                _open_days[_open_days["department"].notna()]
+                .groupby("department")["days_open"].mean()
+                .reset_index()
+                .sort_values("days_open", ascending=False)
+            )
+            days_dept["days_open"] = days_dept["days_open"].round(0)
+            fig = px.bar(
+                days_dept, x="department", y="days_open",
+                title="Avg Days Open by Department",
+                color_discrete_sequence=["#3B82F6"],
+                labels={"days_open": "Avg Days Open", "department": ""},
+                text="days_open",
+            )
+            fig.update_traces(
+                texttemplate="%{text:.0f}d", textposition="outside",
+                textfont=dict(size=11, color="#374151"), marker_line_width=0,
+            )
+            fig.update_layout(
+                showlegend=False,
+                yaxis=dict(range=[0, days_dept["days_open"].max() * 1.2]),
+            )
+            st.plotly_chart(clean_chart(fig, height=300), use_container_width=True)
+
     st.markdown("#### Open Roles Detail")
     table_df = (
-        open_df.groupby(["department", "position_status", "budget_owner_approval"])
+        open_df.groupby(["department", "position_status", "employment_type", "budget_owner_approval"])
         .size().reset_index(name="Count")
         .rename(columns={
             "department": "Department",
             "position_status": "Status",
+            "employment_type": "Type",
             "budget_owner_approval": "Budget Approval",
         })
         .sort_values(["Department", "Count"], ascending=[True, False])
@@ -507,18 +518,35 @@ with tab2:
 # ── Tab 3: EoY Projection ─────────────────────────────────────────────────────
 
 with tab3:
+    # Attrition assumption callout
+    if trailing_rate is not None:
+        diff_pp   = (trailing_rate - 0.15) * 100
+        diff_str  = f"+{diff_pp:.1f}pp" if diff_pp >= 0 else f"{diff_pp:.1f}pp"
+        diff_col  = "#EF4444" if diff_pp > 1 else DARK_GREEN
+        st.markdown(
+            f'<div class="callout-banner">'
+            f'<strong style="color:{DARK_GREEN}">📊 Attrition assumption check:</strong>'
+            f'<span style="color:#374151;font-size:0.9rem"> '
+            f'Trailing 18m annualised rate: <strong>{trailing_rate*100:.1f}%</strong> &nbsp;|&nbsp; '
+            f'Base case assumption: <strong>15.0%</strong> &nbsp;|&nbsp; '
+            f'Difference: <strong style="color:{diff_col}">{diff_str}</strong>. '
+            f'The base case is grounded in observed data — the gap is negligible.</span>'
+            f'</div>',
+            unsafe_allow_html=True,
+        )
+
     sc1, sc2, sc3 = st.columns(3)
     badges = {"Low": "Conservative", "Base": "⭐ Base Case", "High": "Pessimistic"}
 
     for col, (name, data) in zip([sc1, sc2, sc3], scenarios.items()):
-        card_cls = "scenario-base" if name == "Base" else "scenario-other"
+        card_cls  = "scenario-base" if name == "Base" else "scenario-other"
         delta     = data["eoy"] - base_fte
         delta_col = "#EF4444" if delta < 0 else DARK_GREEN
         delta_str = f"{'▼' if delta < 0 else '▲'} {abs(delta):.0f} vs current"
         col.markdown(
             f'<div class="{card_cls}">'
-            f'<p style="color:{PRIMARY};font-size:0.72rem;font-weight:700;text-transform:uppercase;'
-            f'letter-spacing:0.07em;margin:0 0 4px">{badges[name]}</p>'
+            f'<p style="color:{PRIMARY};font-size:0.72rem;font-weight:700;'
+            f'text-transform:uppercase;letter-spacing:0.07em;margin:0 0 4px">{badges[name]}</p>'
             f'<h2 style="color:{DARK_GREEN};margin:0 0 4px;font-size:1.5rem;font-weight:700">{name}</h2>'
             f'<p style="color:#6B7280;margin:0 0 14px;font-size:0.85rem">'
             f'Attrition rate: <strong>{data["rate"]*100:.0f}%</strong></p>'
@@ -547,10 +575,8 @@ with tab3:
         bar_colors = [DARK_GREEN, "#3B82F6", "#34D186", "#1A7A50", "#EF4444"]
 
         fig = go.Figure(go.Bar(
-            x=bar_labels,
-            y=bar_values,
-            marker_color=bar_colors,
-            marker_line_width=0,
+            x=bar_labels, y=bar_values,
+            marker_color=bar_colors, marker_line_width=0,
             text=[f"{v:.0f}" for v in bar_values],
             textposition="outside",
             textfont=dict(size=13, color="#374151", family="Inter, sans-serif"),
@@ -560,14 +586,10 @@ with tab3:
             title_font=dict(size=14, color="#111827", family="Inter, sans-serif"),
             yaxis=dict(
                 range=[220, max(bar_values) * 1.15],
-                gridcolor="#F3F4F6",
-                title="FTE",
-                tickfont=dict(size=11),
+                gridcolor="#F3F4F6", title="FTE", tickfont=dict(size=11),
             ),
             xaxis=dict(showgrid=False, tickfont=dict(size=11)),
-            height=420,
-            paper_bgcolor="white",
-            plot_bgcolor="white",
+            height=420, paper_bgcolor="white", plot_bgcolor="white",
             font=dict(family="Inter, sans-serif", size=12),
             margin=dict(l=12, r=12, t=52, b=16),
         )
@@ -608,36 +630,29 @@ with tab3:
     st.markdown("---")
 
     if not atr.empty:
-        # Monthly trend line
         atr_trend = (
             atr.groupby("year_month")["attrition_rate_annualised"]
             .mean().reset_index().sort_values("year_month")
         )
         avg_rate = atr_trend["attrition_rate_annualised"].mean()
 
-        # Identify first, peak and last indices for selective labels
         _y = atr_trend["attrition_rate_annualised"] * 100
         _label_idx = sorted({0, int(_y.idxmax()), len(_y) - 1})
         _labels = [f"{v:.1f}%" if i in _label_idx else "" for i, v in enumerate(_y)]
 
         fig = go.Figure()
         fig.add_trace(go.Scatter(
-            x=atr_trend["year_month"],
-            y=_y,
+            x=atr_trend["year_month"], y=_y,
             mode="lines+markers+text",
             name="Annualised Rate",
             line=dict(color=DARK_GREEN, width=2.5),
             marker=dict(size=7, color=DARK_GREEN, line=dict(width=2, color="white")),
-            text=_labels,
-            textposition="top center",
+            text=_labels, textposition="top center",
             textfont=dict(size=10, color=DARK_GREEN, family="Inter, sans-serif"),
             hovertemplate="<b>%{x|%b %Y}</b><br>Annualised: %{y:.1f}%<extra></extra>",
         ))
         fig.add_hline(
-            y=avg_rate * 100,
-            line_dash="dash",
-            line_color="#EF4444",
-            line_width=1.5,
+            y=avg_rate * 100, line_dash="dash", line_color="#EF4444", line_width=1.5,
             annotation_text=f"18m Avg: {avg_rate*100:.1f}%",
             annotation_position="top right",
             annotation_font=dict(color="#EF4444", size=11),
@@ -646,23 +661,17 @@ with tab3:
             title="Monthly Annualised Attrition Rate",
             title_font=dict(size=14, color="#111827", family="Inter, sans-serif"),
             yaxis=dict(
-                title="Annualised Rate (%)",
-                tickformat=".1f",
-                ticksuffix="%",
-                showgrid=True,
-                gridcolor="#F3F4F6",
-                range=[0, atr_trend["attrition_rate_annualised"].max() * 100 * 1.35],
+                title="Annualised Rate (%)", tickformat=".1f", ticksuffix="%",
+                showgrid=True, gridcolor="#F3F4F6",
+                range=[0, _y.max() * 1.35],
             ),
             xaxis=dict(showgrid=False, title=""),
-            height=390,
-            paper_bgcolor="white",
-            plot_bgcolor="white",
+            height=390, paper_bgcolor="white", plot_bgcolor="white",
             font=dict(family="Inter, sans-serif", size=12),
             margin=dict(l=12, r=12, t=52, b=16),
         )
         st.plotly_chart(fig, use_container_width=True)
 
-        # Attrition by department
         atr_dept = (
             atr.groupby("department")["attrition_rate_annualised"]
             .mean().reset_index()
@@ -676,17 +685,12 @@ with tab3:
             text="attrition_rate_annualised",
         )
         fig.update_traces(
-            texttemplate="%{text:.1%}",
-            textposition="outside",
-            textfont=dict(size=12, color="#374151"),
-            marker_line_width=0,
+            texttemplate="%{text:.1%}", textposition="outside",
+            textfont=dict(size=12, color="#374151"), marker_line_width=0,
         )
         fig.update_layout(
             showlegend=False,
-            yaxis=dict(
-                tickformat=".0%",
-                range=[0, atr_dept["attrition_rate_annualised"].max() * 1.25],
-            ),
+            yaxis=dict(tickformat=".0%", range=[0, atr_dept["attrition_rate_annualised"].max() * 1.25]),
         )
         st.plotly_chart(clean_chart(fig, height=360), use_container_width=True)
     else:
@@ -718,7 +722,8 @@ with tab4:
             f'<strong>{base_fte:,} active FTE</strong>. '
             f'The largest department is <strong>{largest_dept}</strong> with {largest_dept_n} FTE, '
             f'and the largest region is <strong>{largest_region}</strong> '
-            f'with {largest_region_n} FTE.</p></div>',
+            f'with {largest_region_n} FTE. '
+            f'<strong>{confirmed_leavers_n} confirmed leavers</strong> are departing before year-end.</p></div>',
             unsafe_allow_html=True,
         )
         st.markdown(
@@ -726,8 +731,14 @@ with tab4:
             f'<p style="color:#374151;line-height:1.6">Under the '
             f'<strong>base case scenario (15% attrition)</strong>, the organisation is projected '
             f'to end the year at <strong>{base_eoy} FTE</strong>. '
-            f'The range across scenarios runs from <strong>{low_eoy}</strong> (low, 12%) '
-            f'to <strong>{high_eoy}</strong> (high, 18%).</p></div>',
+            f'The range runs from <strong>{low_eoy}</strong> (low, 12%) '
+            f'to <strong>{high_eoy}</strong> (high, 18%). '
+            f'The base case is grounded in the observed 18m trailing rate of '
+            f'<strong>{trailing_rate*100:.1f}%</strong>.</p></div>'
+            if trailing_rate else
+            f'<div class="summary-card"><h4>📅 End of Year Outlook</h4>'
+            f'<p style="color:#374151;line-height:1.6">Base case projects <strong>{base_eoy} FTE</strong> '
+            f'(range: {low_eoy}–{high_eoy}).</p></div>',
             unsafe_allow_html=True,
         )
 
@@ -735,9 +746,12 @@ with tab4:
         st.markdown(
             f'<div class="summary-card"><h4>🔍 Hiring Pipeline</h4>'
             f'<p style="color:#374151;line-height:1.6">There are '
-            f'<strong>{open_count} open positions</strong> in total. '
-            f'Of these, <strong>{recruiting_n}</strong> are actively recruiting. '
-            f'<strong>{pending_budget}</strong> open role(s) still need budget approval.</p></div>',
+            f'<strong>{open_count} open positions</strong> — '
+            f'<strong>{recruiting_n}</strong> actively recruiting, '
+            f'<strong>{approved_n}</strong> approved not started, '
+            f'<strong>{on_hold_n}</strong> on hold. '
+            f'Average time open: <strong>{avg_days_open_str} days</strong>. '
+            f'<strong>{pending_budget}</strong> role(s) still need budget approval.</p></div>',
             unsafe_allow_html=True,
         )
         st.markdown(
@@ -746,7 +760,7 @@ with tab4:
             '<li style="margin-bottom:6px;line-height:1.5"><strong>Overview:</strong> Total headcount '
             'and distribution by department, region, employment type, and management level.</li>'
             '<li style="margin-bottom:6px;line-height:1.5"><strong>Open Positions:</strong> '
-            'Hiring pipeline — recruiting, approved, on hold, and budget status.</li>'
+            'Hiring pipeline — status, employment type split, days open, and budget approval.</li>'
             '<li style="margin-bottom:6px;line-height:1.5"><strong>EoY Projection:</strong> '
             'Year-end headcount under three attrition scenarios with full methodology.</li>'
             '<li style="margin-bottom:6px;line-height:1.5"><strong>Summary:</strong> '
@@ -755,7 +769,8 @@ with tab4:
             'Plain-English definitions for every metric.</li>'
             '</ol>'
             '<p style="margin-top:10px;font-size:0.82rem;color:#9CA3AF">'
-            'Use the <strong>Department</strong> filter in the sidebar to focus any view.</p>'
+            'Use the <strong>Department</strong> and <strong>Region</strong> filters at the top '
+            'to focus any view.</p>'
             '</div>',
             unsafe_allow_html=True,
         )
@@ -771,12 +786,16 @@ with tab5:
          "Total FTE of employees in filled positions (is_active = 1). Includes FTE, Fixed-Term, and Contractor types."),
         ("Permanent FTE",
          "Sum of FTE for active employees on permanent contracts (employment_type = FTE)."),
+        ("Confirmed Leavers",
+         "Active employees with a confirmed departure date before year-end (is_confirmed_leaver_eoy = 1). Flagged amber — known headcount reduction."),
         ("Stable FTE Base",
          "Active permanent FTE who are not confirmed leavers by year-end. Used as the denominator for voluntary attrition modelling."),
         ("Net Confirmed Position",
          "Projected headcount after accounting for all known exits (confirmed leavers + FTC endings) and signed starters, before voluntary attrition."),
         ("Signed Not Started",
-         "Candidates who have signed an offer but not yet joined (is_signed_not_started = 1). Counted separately from active headcount."),
+         "Candidates who have signed an offer but not yet joined (is_signed_not_started = 1). Also counted in Active Headcount — see data note on Overview tab."),
+        ("Avg Days Open",
+         "Average number of calendar days since req_opened_date for currently open positions, as at May 2025. Proxy for pipeline ageing and time-to-fill pressure."),
         ("Open - Recruiting",
          "Open positions where active recruitment is underway (position_status = 'Open - Recruiting')."),
         ("Open - Approved",
@@ -785,14 +804,12 @@ with tab5:
          "Positions that are approved but paused — typically due to budget review or reprioritisation (position_status = 'Open - On Hold')."),
         ("Budget Approved",
          "Open roles where the budget owner has given formal sign-off (budget_owner_approval = 'Approved')."),
-        ("Confirmed Leavers",
-         "Active employees with a confirmed departure date before year-end (is_confirmed_leaver_eoy = 1)."),
         ("FTC Endings",
          "Employees on Fixed-Term Contracts whose contract is due to expire before year-end (is_ftc_ending_eoy = 1)."),
         ("Voluntary Attrition",
          "Estimated unplanned departures modelled as: Stable FTE × attrition rate × (8/12 months remaining). Applied per scenario."),
         ("EoY Projection Range",
-         "The range of projected year-end FTE across three attrition scenarios: Low (12%), Base (15%), and High (18%)."),
+         "The range of projected year-end FTE across three attrition scenarios: Low (12%), Base (15%), and High (18%). Base is grounded in the observed 18m trailing rate."),
         ("FTE",
          "Full-Time Equivalent — a unit representing one full-time employee. Part-time workers may contribute a fractional FTE."),
         ("Fixed-Term",
