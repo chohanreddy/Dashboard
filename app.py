@@ -175,14 +175,27 @@ with hdr_left:
 
 with hdr_right:
     st.markdown(
-        f'<div style="height:14px"></div>',   # nudge widget down to align with banner
+        f"""<div style="
+            background:white;
+            border:1px solid #E5E7EB;
+            border-radius:12px;
+            padding:14px 16px 6px;
+            box-shadow:0 1px 4px rgba(0,0,0,0.07);
+            height:100%;
+        ">
+        <p style="margin:0 0 6px;font-size:0.75rem;font-weight:600;
+                  text-transform:uppercase;letter-spacing:0.06em;color:#6B7280">
+            Filter by Department
+        </p>
+        </div>""",
         unsafe_allow_html=True,
     )
     selected_depts = st.multiselect(
-        "Filter by Department",
+        "",
         options=departments,
         default=[],
         placeholder="All Departments",
+        label_visibility="collapsed",
     )
 
 st.markdown('<div style="margin-bottom:8px"></div>', unsafe_allow_html=True)
@@ -313,8 +326,7 @@ with tab1:
         fig = px.bar(
             dept_fte, x="department", y="fte",
             title="Active FTE by Department",
-            color="department",
-            color_discrete_sequence=COLOR_SEQ,
+            color_discrete_sequence=[DARK_GREEN],
             labels={"fte": "FTE", "department": ""},
             text="fte",
         )
@@ -378,8 +390,7 @@ with tab1:
             mgmt_fte, y="management_level", x="fte",
             orientation="h",
             title="Active FTE by Management Level",
-            color="management_level",
-            color_discrete_sequence=list(reversed(COLOR_SEQ[:5])),
+            color_discrete_sequence=[DARK_GREEN],
             labels={"fte": "FTE", "management_level": ""},
             text="fte",
         )
