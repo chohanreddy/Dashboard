@@ -6,7 +6,7 @@ import base64
 
 st.set_page_config(
     layout="wide",
-    page_title="Headcount Dashboard",
+    page_title="Headcount Dashboard - People Analytics Dashboard",
     page_icon="📊"
 )
 
@@ -164,7 +164,7 @@ with hdr_left:
         <div>
             <h1 style="color:white;margin:0;font-size:1.7rem;font-weight:700;
                        letter-spacing:-0.02em;line-height:1.2">
-                Headcount Dashboard
+                Headcount Dashboard – People Analytics Dashboard
             </h1>
             <p style="color:rgba(255,255,255,0.82);margin:4px 0 0;font-size:0.88rem">
                 People Analytics &nbsp;·&nbsp; As at May 2025
