@@ -131,7 +131,7 @@ with hdr_left:
                 Headcount Dashboard – People Analytics Dashboard
             </h1>
             <p style="color:rgba(255,255,255,0.82);margin:4px 0 0;font-size:0.88rem">
-                People Analytics &nbsp;·&nbsp; As at May 2025
+                People Analytics &nbsp;·&nbsp; As at May 2026
             </p>
         </div>
     </div>
@@ -179,7 +179,7 @@ atr = atr_all[atr_mask].copy()
 
 # ─── Pre-compute ──────────────────────────────────────────────────────────────
 
-REF_DATE = pd.Timestamp("2025-05-01")
+REF_DATE = pd.Timestamp("2026-05-01")
 
 active_df = df[df["is_active"] == 1]
 open_df   = df[df["is_open"] == 1]
@@ -795,7 +795,7 @@ with tab5:
         ("Signed Not Started",
          "Candidates who have signed an offer but not yet joined (is_signed_not_started = 1). Also counted in Active Headcount — see data note on Overview tab."),
         ("Avg Days Open",
-         "Average number of calendar days since req_opened_date for currently open positions, as at May 2025. Proxy for pipeline ageing and time-to-fill pressure."),
+         "Average number of calendar days since req_opened_date for currently open positions, as at May 2026. Proxy for pipeline ageing and time-to-fill pressure."),
         ("Open - Recruiting",
          "Open positions where active recruitment is underway (position_status = 'Open - Recruiting')."),
         ("Open - Approved",
