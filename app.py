@@ -746,7 +746,7 @@ with tab4:
         st.markdown(
             f'<div class="summary-card"><h4>🔍 Hiring Pipeline</h4>'
             f'<p style="color:#374151;line-height:1.6">There are '
-            f'<strong>{open_count} open positions</strong> — '
+            f'<strong>{open_count} open positions</strong>: '
             f'<strong>{recruiting_n}</strong> actively recruiting, '
             f'<strong>{approved_n}</strong> approved not started, '
             f'<strong>{on_hold_n}</strong> on hold. '
@@ -760,11 +760,11 @@ with tab4:
             '<li style="margin-bottom:6px;line-height:1.5"><strong>Overview:</strong> Total headcount '
             'and distribution by department, region, employment type, and management level.</li>'
             '<li style="margin-bottom:6px;line-height:1.5"><strong>Open Positions:</strong> '
-            'Hiring pipeline — status, employment type split, days open, and budget approval.</li>'
+            'Hiring pipeline: status, employment type split, days open, and budget approval.</li>'
             '<li style="margin-bottom:6px;line-height:1.5"><strong>EoY Projection:</strong> '
             'Year-end headcount under three attrition scenarios with full methodology.</li>'
             '<li style="margin-bottom:6px;line-height:1.5"><strong>Summary:</strong> '
-            'This page — plain-language snapshot for leadership briefings.</li>'
+            'This page: plain-language snapshot for leadership briefings.</li>'
             '<li style="line-height:1.5"><strong>Data Dictionary:</strong> '
             'Plain-English definitions for every metric.</li>'
             '</ol>'
@@ -787,13 +787,13 @@ with tab5:
         ("Permanent FTE",
          "Sum of FTE for active employees on permanent contracts (employment_type = FTE)."),
         ("Confirmed Leavers",
-         "Active employees with a confirmed departure date before year-end (is_confirmed_leaver_eoy = 1). Flagged amber — known headcount reduction."),
+         "Active employees with a confirmed departure date before year-end (is_confirmed_leaver_eoy = 1). Flagged amber as a known headcount reduction."),
         ("Stable FTE Base",
          "Active permanent FTE who are not confirmed leavers by year-end. Used as the denominator for voluntary attrition modelling."),
         ("Net Confirmed Position",
          "Projected headcount after accounting for all known exits (confirmed leavers + FTC endings) and signed starters, before voluntary attrition."),
         ("Signed Not Started",
-         "Candidates who have signed an offer but not yet joined (is_signed_not_started = 1). Also counted in Active Headcount — see data note on Overview tab."),
+         "Candidates who have signed an offer but not yet joined (is_signed_not_started = 1). Also counted in Active Headcount. See data note on Overview tab."),
         ("Avg Days Open",
          "Average number of calendar days since req_opened_date for currently open positions, as at May 2026. Proxy for pipeline ageing and time-to-fill pressure."),
         ("Open - Recruiting",
@@ -801,7 +801,7 @@ with tab5:
         ("Open - Approved",
          "Positions approved to hire but recruitment not yet started (position_status = 'Open - Approved')."),
         ("Open - On Hold",
-         "Positions that are approved but paused — typically due to budget review or reprioritisation (position_status = 'Open - On Hold')."),
+         "Positions that are approved but paused, typically due to budget review or reprioritisation (position_status = 'Open - On Hold')."),
         ("Budget Approved",
          "Open roles where the budget owner has given formal sign-off (budget_owner_approval = 'Approved')."),
         ("FTC Endings",
@@ -811,7 +811,7 @@ with tab5:
         ("EoY Projection Range",
          "The range of projected year-end FTE across three attrition scenarios: Low (12%), Base (15%), and High (18%). Base is grounded in the observed 18m trailing rate."),
         ("FTE",
-         "Full-Time Equivalent — a unit representing one full-time employee. Part-time workers may contribute a fractional FTE."),
+         "Full-Time Equivalent, representing one full-time employee. Part-time workers may contribute a fractional FTE."),
         ("Fixed-Term",
          "An employee on a time-limited contract with a defined end date. Counted separately from permanent FTE."),
         ("Contractor",
