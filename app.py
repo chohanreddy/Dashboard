@@ -6,7 +6,7 @@ import base64
 
 st.set_page_config(
     layout="wide",
-    page_title="Headcount Dashboard - People Analytics Dashboard",
+    page_title="Headcount Dashboard: People Analytics Dashboard",
     page_icon="📊"
 )
 
@@ -128,10 +128,10 @@ with hdr_left:
         <div>
             <h1 style="color:white;margin:0;font-size:1.7rem;font-weight:700;
                        letter-spacing:-0.02em;line-height:1.2">
-                Headcount Dashboard – People Analytics Dashboard
+                Headcount Dashboard: People Analytics Dashboard
             </h1>
             <p style="color:rgba(255,255,255,0.82);margin:4px 0 0;font-size:0.88rem">
-                People Analytics &nbsp;·&nbsp; As at May 2026
+                People Analytics &nbsp;·&nbsp; May 2026
             </p>
         </div>
     </div>
@@ -402,9 +402,9 @@ with tab1:
 with tab2:
     # 5 KPIs — added Avg Days Open
     k1, k2, k3, k4, k5 = st.columns(5)
-    kpi_card(k1, "Actively Recruiting",  f"{recruiting_n:,}",         "Open – Recruiting")
-    kpi_card(k2, "Approved Not Started", f"{approved_n:,}",           "Open – Approved")
-    kpi_card(k3, "On Hold",              f"{on_hold_n:,}",            "Open – On Hold")
+    kpi_card(k1, "Actively Recruiting",  f"{recruiting_n:,}",         "Open: Recruiting")
+    kpi_card(k2, "Approved Not Started", f"{approved_n:,}",           "Open: Approved")
+    kpi_card(k3, "On Hold",              f"{on_hold_n:,}",            "Open: On Hold")
     kpi_card(k4, "Signed Not Started",   f"{signed_not_started_n:,}", "Offer accepted · also in active headcount")
     kpi_card(k5, "Avg Days Open",        avg_days_open_str,           "From req opened to today")
 
@@ -530,7 +530,7 @@ with tab3:
             f'Trailing 18m annualised rate: <strong>{trailing_rate*100:.1f}%</strong> &nbsp;|&nbsp; '
             f'Base case assumption: <strong>15.0%</strong> &nbsp;|&nbsp; '
             f'Difference: <strong style="color:{diff_col}">{diff_str}</strong>. '
-            f'The base case is grounded in observed data — the gap is negligible.</span>'
+            f'The base case is grounded in observed data. The gap is negligible.</span>'
             f'</div>',
             unsafe_allow_html=True,
         )
